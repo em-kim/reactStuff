@@ -2,20 +2,71 @@ import React, { Component } from 'react';
 
 //api key 4 l8tr = 3d6b633422451393e953dab4052ea0e4
 //url 4 l8tr  - http://api.openweathermap.org/data/2.5/weather?q=Bozeman&appid= 
+var apiCall = "http://api.openweathermap.org/data/2.5/weather?q=Bozeman&appid=" + "3d6b633422451393e953dab4052ea0e4";
 
 class WeatherComponent extends React.Component{
   
   constructor(){
     super();
+    this.data;
+    this.state = {isInitialized: false};
+    
   }
+  componentDidMount() {
 
+    fetch(apiCall).then((res) => {
+      return res.json();
+    }).then((data)=>{
+      console.log(data);
+      this.data = data;
+      console.log("data set");
+      this.setState({ 
+        isInitialized: true
+       });
+    });
+  }
+  
   render(){
+    if(this.state.isInitialized === true) {
+    console.log("render() was called");
+    var weatherObj = this.data.main;
+    console.log(this.data.weather);
+    
     return(
       <div>
-        this is your weather component
-      </div>   
+        
+        <table>
+          <thead>
+            <tr>
+              <th>City</th>
+              <th>Temp</th>
+              <th>Pressure</th>
+              <th>Humidity</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+         <tbody>
+          <tr>
+            <td>{this.data.name}</td>
+            <td>{weatherObj.temp}&deg;</td>
+            <td>{weatherObj.pressure}</td>
+            <td>{weatherObj.humidity}</td>
+            <td>{this.data.weather[0].description}</td>
+          
+          </tr>
+        </tbody>
+        </table>
+      </div>  
+       
+      )
+    } else {
+      return (
+        <div>
+          loading...
+        </div>  
       )
     }
+  }
 }
 
 export default WeatherComponent;

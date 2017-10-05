@@ -12,6 +12,11 @@ import Button from 'react-bootstrap/lib/Button';
 
 
 class App extends Component {
+  constructor() {
+    super();
+    this.spaceDawgz = "hey, I'm cool right?";
+  }
+  
 
   render() {
 
